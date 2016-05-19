@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# Author: Kelcey Jamison-Damage
+# Python: 2.66 +
+# OS: CentOS | Other
+# Portable: True
+# License: Apache 2.0
+
 import time
 from functools import wraps
 
