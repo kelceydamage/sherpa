@@ -22,12 +22,12 @@ def debug_results(sherpa, packages, routes, parcels):
 	total_parcels = sum([packages[x]['parcels'] for x in packages]) 
 	for route in routes:
 		print 'region: {0}'.format(route)
-		print '\tpackages: {0}'.format(routes[route]['packages'].keys())
+		print '\tpackages:\t\t{0}'.format(routes[route]['packages'].keys())
 		for package in routes[route]['packages']:
-			print '\tpackage: {0} - parcels: {1}'.format(package, routes[route]['packages'][package])
+			print '\tpackage:\t{0}\tparcels: {1}'.format(package, routes[route]['packages'][package])
 		parcels = sum([routes[route]['packages'][x] for x in routes[route]['packages']])
-		print '\t% total packages: {0}%'.format(round(float(len(routes[route]['packages'].keys())) / float(len(packages.keys())), 2) * 100)
-		print '\t% total parcels: {0}%'.format(round(float(parcels) / float(total_parcels), 2) * 100)
+		print '\t% total packages:\t{0}%'.format(round(float(len(routes[route]['packages'].keys())) / float(len(packages.keys())), 2) * 100)
+		print '\t% total parcels:\t{0}%'.format(round(float(parcels) / float(total_parcels), 2) * 100)
 
 def distribution(order):
 	packages = {}
