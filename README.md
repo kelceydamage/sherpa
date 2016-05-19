@@ -14,6 +14,8 @@ To test Sherpa simple run the `sherpa_test.py` utility
 ```
 The ouput will show the routing distribution as well as the timings for each method execution. Currently `id_gen` is the slowest component (above nanoseconds in the low microseconds per execution). I am aware of this and will be looking for more efficient hash algorithm or library.
 
+Sherpa will also choose the nearest prime number for the amount of packages you request, which is why the setting is called `min_packages`.
+
 Thanks!
 
 ## output Sample
