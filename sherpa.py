@@ -9,6 +9,7 @@ import hashlib
 import math
 from perf import time_it
 
+# This is not production ready as I have not added any form of error handling. That will be coming soon.
 class Sherpa(object):
 	@time_it
 	def __init__(self, packages=30):
