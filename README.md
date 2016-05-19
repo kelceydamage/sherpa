@@ -1,9 +1,9 @@
-# sherpa
+# Sherpa
 SHERPA is a routing engine for data storage.
 
-`sherpa.py` contains a simple algorithm class that will determine where to send a parcel(data_object). It will divide up all your parcels into packages, and return a mapping of which route each package should be sent to. Sherpa is both consistent and uniform. It assignes packages to routes in a circular fashion. This means Sherpa forgoes the need for a hashmap/lookup table as it can compute the location of your object instantly. Simply feed the Sherpa the the string representation of your objects name/key/id and it will tell you where it is/will be stored. Simple!
+`sherpa.py` contains a simple algorithm class that will determine where to send a parcel(data_object). It will divide up all your parcels into packages, and return a mapping of which route each package should be sent to. Sherpa is both consistent and uniform. It assignes packages to routes in a circular fashion. This means Sherpa forgoes the need for a hashmap/lookup table as it can compute the location of your object instantly. Simply feed the Sherpa the the string representation of your object's name/key/id and it will tell you where it is/will be stored. Simple!
 
-## Testing Sherpa
+### Testing Sherpa
 To test Sherpa simple run the `sherpa_test.py` utility
 ```bash
 * -h | help
@@ -14,11 +14,18 @@ To test Sherpa simple run the `sherpa_test.py` utility
 ```
 The ouput will show the routing distribution as well as the timings for each method execution. Currently `id_gen` is the slowest component (above nanoseconds in the low microseconds per execution). I am aware of this and will be looking for more efficient hash algorithm or library.
 
-Sherpa will also choose the nearest prime number for the amount of packages you request, which is why the setting is called `min_packages`.
+Sherpa will also choose the nearest prime number for the amount of packages you request, which is why the init arg is called `min_packages`.
+
+### Comming Soon
+
+* **Pillar Box** definitions and optional Piller Box server code. The Pillar Box can act as a data node or an interface to other database technologies. This means you could use Pillar Boxes to create a sharded MySQL backend, or to connect multiple DynamoDB's into a cluster giving an increase in distributed read/write performance.
+* **Parity Routes** which will allow replication of data using integer position shifting.
+* **Writeback Replication** which will create aynchronous object duplication
+* **Other Cool Stuff**
 
 Thanks!
 
-## output Sample
+### output Sample
 ```bash
 ----------------------------------------------------------------------
 Sherpa routing results: 9999 parcels in 23[20] packages over 7 regions
