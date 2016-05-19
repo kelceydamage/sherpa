@@ -1,7 +1,7 @@
 # sherpa
 SHERPA is a routing engine for data storage.
 
-`sherpa.py` contains a simple algorithm class that will determine where to send a parcel(data_object). It will devide up all your parcels into packages, and return a mapping of which route each package should be sent to. Sherpa is both consistent and uniform. It assignes packages to routes in a circular fashion.
+`sherpa.py` contains a simple algorithm class that will determine where to send a parcel(data_object). It will divide up all your parcels into packages, and return a mapping of which route each package should be sent to. Sherpa is both consistent and uniform. It assignes packages to routes in a circular fashion. This means Sherpa forgoes the need for a hashmap/lookup table as it can compute the location of your object instantly. Simply feed the Sherpa the the string representation of your objects name/key/id and it will tell you where it is/will be stored. Simple!
 
 ## Testing Sherpa
 To test Sherpa simple run the `sherpa_test.py` utility
