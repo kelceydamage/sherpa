@@ -17,9 +17,9 @@ The ouput will show the routing distribution as well as the timings for each met
 Sherpa will also choose the nearest prime number for the amount of packages you request, which is why the init arg is called `min_packages`.
 
 ### Relationships
-Sherpa `routes` lead to `pillarboxes` where `packages` are delivered or picked up. Each `package` will contain may `parcels`. A `parcel` is an object with properties as simple as a `key` and a `value`, or a complex as you want to make it. `parcels` also contain certain base attributes for routing and transmition.
+Sherpa `routes` lead to `pillarboxes` where `containers` are delivered or picked up. Each `container` will contain one or many `parcels`. A `parcel` is an object with properties as simple as a `key` and a `value`, or a complex as you want to make it. `parcels` also contain certain base attributes for routing and transmition.
 
-It is completely possible to put any type of source data into a `parcel`. Once `parcels` are ready to be shipped, they are assigned a `package` by Sherpa and each package has a `route`. The shipment is then sent for distribution. Retrieving objects is a similar process and only requires the `parcel` identifier(key/id). Sherpa will then locate your parcel and retrieve it for you.
+It is completely possible to put any type of source data into a `parcel`. Once `parcels` are ready to be shipped, they are assigned to a `shipment` and Sherpa places them in the correct `container` as per the shipping manifest. Each container is then shipped to a waiting `pillarbox`. Retrieving objects is a similar process and only requires the `parcel` identifier(key/id). Sherpa will then locate your parcel and retrieve it for you.
 
 ### Comming Soon
 
