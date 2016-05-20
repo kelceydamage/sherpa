@@ -31,6 +31,9 @@ from processing import Processing
 from multiprocessing import current_process
 from re import search
 from sys import getsizeof
+from os import sys, path
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+from conf.nodes import nodes
 
 # Class
 #-----------------------------------------------------------------------#
@@ -58,8 +61,7 @@ class SocketClient(object):
 		process_list = []
 
 		def __lookup_address(route):
-			pass
-			#<code for address lookup from config file>
+			return nodes[route]
 
 		def __connect(self, address, packages):
 			client_socket = socket.socket(

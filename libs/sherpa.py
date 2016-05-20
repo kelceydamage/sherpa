@@ -28,10 +28,11 @@ from perf import time_it
 
 # This is not production ready as I have not added any form of error handling. That will be coming soon.
 class Sherpa(object):
-	@time_it
-	def __init__(self, packages=30):
+	#@time_it
+	def __init__(self, packages=30, routes=1):
 		super(Sherpa, self).__init__()
 		self.min_packages = packages
+		self.routes = routes
 		self.packages = self.gen_primes(packages).next()		
 
 	@time_it
@@ -53,20 +54,20 @@ class Sherpa(object):
 		pass
 
 	@time_it
-	def packer(self, parcel, routes):
+	def packer(self, parcel):
 		@time_it	
 		def id_gen(parcel):
-			id = int(hashlib.sha1(parcel).hexdigest(), 16)
-			return id
+			parcel.id = int(hashlib.sha1(parcel.key).hexdigest(), 16)
+			return parcel
 		@time_it
-		def package_assignment(id):
-			package = id % self.packages
-			return package
+		def package_assignment(parcel):
+			parcel.package = parcel.id % self.packages
+			return parcel
 		@time_it
-		def region_assignment(package, routes):
-			region = package % routes
-			return region
-		id = id_gen(parcel)
-		package = package_assignment(id)
-		region = region_assignment(package, routes)
-		return int(package), int(region)
+		def region_assignment(parcel):
+			parcel.region = parcel.package % self.routes
+			return parcel
+		parcel = id_gen(parcel)
+		parcel = package_assignment(parcel)
+		parcel = region_assignment(parcel)
+		return parcel

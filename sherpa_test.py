@@ -41,9 +41,9 @@ parcels = quartermaster(int(options.parcels), [4, 16])
 order = []
 
 # Actual code for using sherpa
-sherpa = Sherpa(min_packages)
+sherpa = Sherpa(packages=min_packages, routes=routes)
 for parcel in parcels:
-	order.append(sherpa.packer(parcel, routes))
+	order.append(sherpa.packer(parcel))
 
 routes, packages = distribution(order)
 debug_results(

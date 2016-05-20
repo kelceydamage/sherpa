@@ -25,6 +25,15 @@
 import string
 import random
 
+class Parcel(object):
+        def __init__(self, params):
+                super(Parcel, self).__init__()
+		self.set_attributes(params)
+
+        def set_attributes(self, params):
+                for param in params:
+                        setattr(self, param, params[param])
+
 def debug_results(sherpa, packages, routes, parcels):
 	print '\n\n'
 	header = 'Sherpa routing results: {3} parcels in {0}[{1}] packages over {2} regions'.format(
@@ -49,23 +58,23 @@ def debug_results(sherpa, packages, routes, parcels):
 def distribution(order):
 	packages = {}
 	routes = {}
-	for n in order:
-		if n[0] in packages.keys():
-			packages[n[0]]['parcels'] += 1
-			packages[n[0]]['region'] = n[1]
+	for parcel in order:
+		if parcel.package in packages.keys():
+			packages[parcel.package]['parcels'] += 1
+			packages[parcel.package]['region'] = parcel.region
 		else:
-			packages[n[0]] = {}
-			packages[n[0]]['parcels'] = 1	
-			packages[n[0]]['region'] = n[1] 
-		if n[1] in routes.keys():
-			if n[0] in routes[n[1]]['packages']:
-				routes[n[1]]['packages'][n[0]] += 1 
+			packages[parcel.package] = {}
+			packages[parcel.package]['parcels'] = 1	
+			packages[parcel.package]['region'] = parcel.region
+		if parcel.region in routes.keys():
+			if parcel.package in routes[parcel.region]['packages']:
+				routes[parcel.region]['packages'][parcel.package] += 1 
 			else:
-				routes[n[1]]['packages'][n[0]] = 1
+				routes[parcel.region]['packages'][parcel.package] = 1
 		else:
-			routes[n[1]] = {}
-			routes[n[1]]['packages'] = {}
-			routes[n[1]]['packages'][n[0]] = 1
+			routes[parcel.region] = {}
+			routes[parcel.region]['packages'] = {}
+			routes[parcel.region]['packages'][parcel.package] = 1
 	return routes, packages
 
 def quartermaster(quantity, bounds=[4, 16]):
@@ -74,5 +83,5 @@ def quartermaster(quantity, bounds=[4, 16]):
 		return key
 	items = []
 	for n in range(1, quantity):
-		items.append(picker(random.uniform(bounds[0], bounds[1])))	
+		items.append(Parcel({'key': picker(random.uniform(bounds[0], bounds[1]))}))
 	return items

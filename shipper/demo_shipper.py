@@ -26,5 +26,43 @@ from os import sys, path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from libs.socket_client import SocketClient 
 from libs.sherpa import Sherpa 
+from conf.nodes import nodes
+import hashlib
+import time
+
+class Parcel(object):
+	def __init__(self, params):
+		super(Parcel, self).__init__()
+		self.set_attributes(params)
+	
+	def set_attributes(self, params):
+		for param in params:
+			setattr(self, param, params[param])
+	
+class Shipment(object):
+	def __init__(self):
+		super(Shipment, self).__init__()
+		self.container = []
+		self.id = hashlib.md5(str(time.time())).hexdigest()
+
+	def assign(self, parcel):
+		self.calculate_route(parcel)
+	
+	def calculate_route(self, parcel):
+		parcel = sherpa.packer(parcel)
+		self.container.append(parcel)
+ 
+params = {
+	'key': 'testobj1',
+	'value': 'testvalue1'
+	}
+sherpa = Sherpa(routes=len(nodes))
+parcel = Parcel(params)	
+shipment = Shipment()
+shipment.assign(parcel)
+
+print shipment.__dict__
+
+s = SocketClient()
 
 print 'Hello World'

@@ -40,7 +40,7 @@
 
 ## Fill in name of program here.
 PROG="pillarbox.py"
-PROG_PATH="/opt/sherpa/pillarbox" ## Not need, but sometimes helpful (if $PROG resides in /opt for example).
+PROG_PATH="/opt/palantir/research/pillarbox" ## Not need, but sometimes helpful (if $PROG resides in /opt for example).
 PID_PATH="var/run"
 PROG_ARGS=""
 
@@ -51,16 +51,18 @@ start() {
         exit 1
     else
         ## Change from /dev/null to something like /var/log/$PROG if you want to save output.
-            $PROG_PATH/$PROG $PROG_ARGS 1>&2 &
-        echo "$PROG started"
-        touch "$PID_PATH/$PROG.pid"
+        $PROG_PATH/$PROG $PROG_ARGS 1>&2 &
+        PID=$!	
+	echo $PID > $PID_PATH/$PROG.pid
+	echo "$PROG started"
     fi
 }
 
 stop() {
     if [ -e "$PID_PATH/$PROG.pid" ]; then
         ## Program is running, so stop it
-        kill -9 $(cat $PID_PATH/$PROG.pid)
+	PID=`cat $PID_PATH/$PROG.pid`
+        kill -9 $PID
 
         rm -rf "$PID_PATH/$PROG.pid"
 
