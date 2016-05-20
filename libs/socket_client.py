@@ -35,7 +35,7 @@ from os import sys, path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from conf.nodes import nodes
 
-# Class
+# Classes
 #-----------------------------------------------------------------------#
 class SocketClient(object):
 	def __init__(self):
@@ -51,7 +51,7 @@ class SocketClient(object):
 			[processing_object, shipment]
 			)
 		response = []	
-		for route in shipment.routes:
+		for route in shipment.routes():
 			queue_response = self.q.get(timeout=4)
 			shipment.ack = queue_response
 		p.join()
@@ -61,9 +61,11 @@ class SocketClient(object):
 		process_list = []
 
 		def __lookup_address(route):
+			print nodes.keys()
+			print route
 			return nodes[route]
 
-		def __connect(self, address, packages):
+		def __connect(self, container):
 			client_socket = socket.socket(
 				socket.AF_INET,
 				socket.SOCK_STREAM
@@ -76,20 +78,19 @@ class SocketClient(object):
 				)
 			tls_sock.settimeout(1)
 			try:
-				tls_sock.connect((address,9999))
+				tls_sock.connect((container.address,9999))
 			except Exception, e:
 				pass
 			try:
-				tls_sock.send(packages)
+				tls_sock.send(container)
 			except Exception, e:
 				pass
 			return tls_sock
 
-		def __spawn(self, route, packages):
+		def __spawn(self, container):
 			tls_sock = __connect(
 				self,
-				__lookup_address(route),
-				packages
+				container
 				)
 			try:
 				reply = json.loads(tls_sock.recv(10244))
@@ -101,10 +102,10 @@ class SocketClient(object):
 			for process in process_list:
 				process.join()
 
-		for route in shipment.routes:
+		for route in shipment.routes():
 			p = processing_object.new_process(
 				__spawn,
-				[self, route, shipment.routes[route]]
+				[self, shipment.manifest[route]]
 				)
 			process_list.append(p)
 		__kill_proc(process_list)

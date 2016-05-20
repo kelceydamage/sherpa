@@ -61,11 +61,11 @@ class Sherpa(object):
 			return parcel
 		@time_it
 		def package_assignment(parcel):
-			parcel.package = parcel.id % self.packages
+			parcel.package = int(parcel.id % self.packages)
 			return parcel
 		@time_it
 		def region_assignment(parcel):
-			parcel.region = parcel.package % self.routes
+			parcel.region = int(parcel.package % self.routes)
 			return parcel
 		parcel = id_gen(parcel)
 		parcel = package_assignment(parcel)

@@ -24,7 +24,7 @@
 #-----------------------------------------------------------------------#
 from multiprocessing import Process, Pool, Queue
 
-# Class
+# Classes
 #-----------------------------------------------------------------------#
 class Processing(object):
 	"""docstring for Processing"""
