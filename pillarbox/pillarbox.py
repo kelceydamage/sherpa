@@ -33,6 +33,8 @@ import os
 import re
 #from plugins.plugin_registration import ar_methods
 
+ar_methods = {'test': 'test'}
+
 class LocalTasks(object):
 	methods = ar_methods
 
