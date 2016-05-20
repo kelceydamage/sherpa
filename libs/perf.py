@@ -29,10 +29,10 @@ global perf
 perf = {'count': 1}
 
 def time_it(func):
-        def _decorator(*args):
-                start = time.time()
-                response = func(*args)
-                took = time.time() - start
+	def _decorator(*args):
+		start = time.time()
+		response = func(*args)
+		took = time.time() - start
 		if func.__name__ not in perf.keys():
 			perf[func.__name__] = {}
 			perf[func.__name__]['raw'] = []
@@ -42,8 +42,8 @@ def time_it(func):
 			perf[func.__name__]['raw'].append(took)
 			perf[func.__name__]['count'] += 1
 		perf['count'] += 1
-                return response
-        return wraps(func)(_decorator)
+		return response
+	return wraps(func)(_decorator)
 
 def perf_analysis():
 	for method in perf:
