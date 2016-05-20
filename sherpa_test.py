@@ -23,9 +23,9 @@
 #-----------------------------------------------------------------------#
 
 import optparse
-from sherpa import Sherpa
+from libs.sherpa import Sherpa
 from sherpa_helpers import debug_results, distribution, quartermaster
-from perf import *
+from libs.perf import perf_results
 
 parser = optparse.OptionParser()
 parser.add_option('-p', '--packages', dest='packages', help='specify the minimum number of packages to ship')
