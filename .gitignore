@@ -2,7 +2,5 @@
 *.kit
 *.csv
 *.txt
-.pyc
-.kit
-.csv
-.txt
+*.pid
+
