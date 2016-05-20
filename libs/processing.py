@@ -30,7 +30,6 @@ class Processing(object):
 	"""docstring for Processing"""
 	def __init__(self):
 		super(Processing, self).__init__()
-			pass
 
 	def create_queue(self):
 		queue = Queue()
