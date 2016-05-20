@@ -89,8 +89,7 @@ if __name__ == '__main__':
 	parcel = Parcel(params)	
 	shipment = Shipment()
 	shipment.assign(parcel)
-	print shipment.routes()
 	s = SocketClient()
 	response = s.agent_query(shipment)
 	
-	print response
+	print response.__dict__

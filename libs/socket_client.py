@@ -27,6 +27,7 @@ import time
 import sys
 import ssl
 import json
+import pickle
 from processing import Processing
 from multiprocessing import current_process
 from re import search
@@ -77,14 +78,17 @@ class SocketClient(object):
 				ssl_version=ssl.PROTOCOL_TLSv1
 				)
 			tls_sock.settimeout(1)
+			print 'sending'
 			try:
 				tls_sock.connect((container.address,9999))
+				print 'connected'
 			except Exception, e:
 				pass
 			try:
-				tls_sock.send(container)
+				tls_sock.send(pickle.dumps(container))
+				print 'sent'
 			except Exception, e:
-				pass
+				print e
 			return tls_sock
 
 		def __spawn(self, container):
@@ -95,7 +99,7 @@ class SocketClient(object):
 			try:
 				reply = json.loads(tls_sock.recv(10244))
 			except Exception, e:
-				pass
+				reply = e
 			self.q.put(reply)
 
 		def __kill_proc(process_list):
