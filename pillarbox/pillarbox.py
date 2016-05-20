@@ -23,7 +23,6 @@
 #-----------------------------------------------------------------------#
 # Imports
 #-----------------------------------------------------------------------#
-
 import SocketServer
 import subprocess
 import socket
@@ -31,10 +30,13 @@ import ssl
 import json
 import os
 import re
-#from plugins.plugin_registration import ar_methods
 
+# Init Variables
+#-----------------------------------------------------------------------#
 ar_methods = {'test': 'test'}
 
+# Classes
+#-----------------------------------------------------------------------#
 class LocalTasks(object):
 	methods = ar_methods
 
@@ -106,12 +108,16 @@ class TCPHandler(SocketServer.BaseRequestHandler):
 		else:
 			self.request.sendall(json.dumps({'error': 'Connection Refused'}))
 
+# Functions
+#-----------------------------------------------------------------------#
 def write_pid_file():
 		pid = str(os.getpid())
 		f = open('/var/run/pillarbox.pid', 'w')
 		f.write(pid)
 		f.close()
 
+# Main
+#-----------------------------------------------------------------------#
 if __name__ == '__main__':
 		write_pid_file()
 		HOST = socket.gethostbyname(socket.gethostname())
