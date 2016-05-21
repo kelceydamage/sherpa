@@ -37,6 +37,9 @@ class Parcel(object):
 		for param in params:
 			setattr(self, param, params[param])
 
+	def get_contents(self):
+		return self.__dict__
+
 class Container(object):
 	def __init__(self, address):
 		super(Container, self).__init__()
@@ -47,7 +50,9 @@ class Container(object):
 		self.contents.append(parcel)
 
 	def unpack(self):
-		return self.contents
+		delivery = self.contents
+		self.contents = []
+		return delivery
 	
 class Shipment(object):
 	def __init__(self, sherpa):
