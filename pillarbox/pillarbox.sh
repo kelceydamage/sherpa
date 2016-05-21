@@ -41,7 +41,8 @@
 ## Fill in name of program here.
 PROG="pillarbox.py"
 #PROG_PATH="/opt/sherpa/pillarbox" ## Not need, but sometimes helpful (if $PROG resides in /opt for example).
-PROG_PATH="/opt/Development/git/sherpa/pillarbox"
+#PROG_PATH="/opt/Development/git/sherpa/pillarbox"
+PROG_PATH=$2
 PID_PATH="var/run"
 PROG_ARGS=""
 
