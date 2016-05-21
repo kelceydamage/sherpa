@@ -101,8 +101,8 @@ class SocketClient(object):
 				container
 				)
 			try:
-				compressed = pickle.loads(tls_sock.recv(10244))
-				reply = bz2.decompress(compressed)
+				decompressed = bz2.decompress(tls_sock.recv(10244))
+				reply = pickle.loads(decompressed)
 			except Exception, e:
 				reply = e
 			self.q.put(reply)
