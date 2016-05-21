@@ -29,10 +29,11 @@ from perf import time_it
 # This is not production ready as I have not added any form of error handling. That will be coming soon.
 class Sherpa(object):
 	#@time_it
-	def __init__(self, packages=30, routes=1):
+	def __init__(self, regions, packages=30):
 		super(Sherpa, self).__init__()
 		self.min_packages = packages
-		self.routes = routes
+		self.regions = regions
+		self.routes = len(regions)
 		self.packages = self.gen_primes(packages).next()		
 
 	@time_it
