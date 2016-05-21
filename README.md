@@ -62,7 +62,7 @@ Demo Shipper sample output:
 
 ### Comming Soon
 
-* **Pillar Box** definitions and optional Piller Box server code. The Pillar Box can act as a data node or an interface to other database technologies. This means you could use Pillar Boxes to create a sharded MySQL backend, or to connect multiple <popular noSQL databases> into a cluster giving an increase in distributed read/write performance.
+* **Pillar Box** definitions and optional Piller Box server code. The Pillar Box can act as a data node or an interface to other database technologies. For example this means you could use Pillar Boxes to create a sharded MySQL backend, or to connect multiple <popular noSQL databases> into a cluster giving an increase in distributed read/write performance.
 * **Parity Routes** which will allow replication of data using integer position shifting.
 * **Writeback Replication** which will create aynchronous object duplication
 * **Other Cool Stuff**
