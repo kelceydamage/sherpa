@@ -28,6 +28,7 @@ import sys
 import ssl
 import json
 import pickle
+import bz2
 from processing import Processing
 from multiprocessing import current_process
 from re import search
@@ -54,7 +55,7 @@ class SocketClient(object):
 		response = []	
 		for route in shipment.routes():
 			queue_response = self.q.get(timeout=4)
-			shipment.ack = queue_response
+			shipment.manifest[route] = queue_response
 		p.join()
 		return shipment
 
@@ -78,15 +79,18 @@ class SocketClient(object):
 				ssl_version=ssl.PROTOCOL_TLSv1
 				)
 			tls_sock.settimeout(1)
-			print 'sending'
+			#print 'sending'
 			try:
 				tls_sock.connect((container.address,9999))
-				print 'connected'
+				#print 'connected'
 			except Exception, e:
 				pass
 			try:
-				tls_sock.send(pickle.dumps(container))
-				print 'sent'
+				compressed = bz2.compress(pickle.dumps(container))
+				container.csize = len(compressed)
+				compressed = bz2.compress(pickle.dumps(container))
+				tls_sock.send(compressed)
+				#print 'sent'
 			except Exception, e:
 				print e
 			return tls_sock
@@ -97,7 +101,8 @@ class SocketClient(object):
 				container
 				)
 			try:
-				reply = json.loads(tls_sock.recv(10244))
+				compressed = pickle.loads(tls_sock.recv(10244))
+				reply = bz2.decompress(compressed)
 			except Exception, e:
 				reply = e
 			self.q.put(reply)
