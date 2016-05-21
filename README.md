@@ -12,6 +12,8 @@ To test Sherpa simply run the `sherpa_test.py` utility
 * -c | specify the amount of parcels to package
 * -s | specify the shape of the parcels [use a 2 value tupple] <= OPTIONAL
 ```
+Example: `./sherpa_test.py -p 20 -r 6 -c 4000`
+
 The ouput will show the routing distribution as well as the timings for each method execution. Currently `id_gen` is the slowest component (above nanoseconds in the low microseconds per execution). I am aware of this and will be looking for more efficient hash algorithm or library.
 
 Sherpa will also choose the nearest prime number for the amount of packages you request, which is why the init arg is called `min_packages`.
