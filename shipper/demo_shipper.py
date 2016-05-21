@@ -45,11 +45,26 @@ params2 = {
 # Main
 #-----------------------------------------------------------------------#
 if __name__ == '__main__':
+	# Instantiate Sherp and provide it with the node registry
 	sherpa = Sherpa(regions=nodes)
+
+	# Create a shipment assign sherpa to it
 	shipment = Shipment(sherpa)
+
+	# Add some parcels to the shipment
 	shipment.assign(Parcel(params))
 	shipment.assign(Parcel(params2))
+
+	# instantiate the Pillar Box client
 	s = SocketClient()
+
+	# Send the shipment and receive it's response
 	response = s.agent_query(shipment)
 	
-	print response.__dict__
+	# Unpack all the containers listed in the shipments manifest
+	for container in response.manifest:
+		# Unpacking a container removes all of it's parcels so it can be
+		# reused and is totally optional
+		for parcel in response.manifest[container].unpack():
+			# Examine all the parcel contents
+			print parcel.get_contents()
