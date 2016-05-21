@@ -52,6 +52,9 @@ start() {
         echo "Error! $PROG is currently running!" 1>&2
         exit 1
     else
+        if [ ! -d $PID_PATH ]; then
+            mkdir -p $PID_PATH
+        fi
         ## Change from /dev/null to something like /var/log/$PROG if you want to save output.
             $PROG_PATH/$PROG $PROG_ARGS 1>&2 &
             PID=$!  
