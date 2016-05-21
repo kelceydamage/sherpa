@@ -21,6 +21,44 @@ Sherpa `routes` lead to `pillarboxes` where `containers` are delivered or picked
 
 It is completely possible to put any type of source data into a `parcel`. Once `parcels` are ready to be shipped, they are assigned to a `shipment` and Sherpa places them in the correct `container` as per the shipping manifest. Each container is then shipped to a waiting `pillarbox`. Retrieving objects is a similar process and only requires the `parcel` identifier(key/id). Sherpa will then locate your parcel and retrieve it for you.
 
+### Pillar Box Demo
+Basic functionality is available now for Pillar Box. To test it out you can launch Pillar Box by one of the following methods:
+* run `pillarbox/pillarbox.sh start <PATH TO PILLARBOX.PY>`
+* run `pillarbox/pillarbox.py`
+Using the first method will daemonize Pillar Box and register it's PID
+
+Once Pillar Box is running execute `shipper/demo-shipper.py` to see it in action.
+
+You can install pillar box on multiple servers. Make sure to update the `conf/nodes.py` file to register each of your servers hostnames.
+
+### Making Use Of Sherpa In Its Current Shape
+Currently Sherpa is only in a demo state, but it can be extended for actual use. `shipper/demo-shipper.py` can be used as an example for how to interact with Sherpa in order to send and receive packages.
+
+To control what happens to a container once it arrives at a Pillar Box can be controlled by modifying and extending the `LocalTasks` class in `pillarbox/pillierbox.py` for an example you can look at the current `.unpack()` method which prints container and parcel details before sending a receipt container back to the sender.
+
+Pillar Box sample output:
+```bash
+--------------------
+delivery to: localhost, delivery_size: 280 bytes, container_size: 72 bytes, compressed_size: 291
+--------------------
+parcel_key: testobj1, parcel_id: 1293294176801013002297190993245407132226136516837
+parcel_region: 0, parcel_package: 0
+parcel_action: store, parcel_size: 1048 bytes
+--------------------
+delivery to: localhost, delivery_size: 280 bytes, container_size: 72 bytes, compressed_size: 282
+--------------------
+parcel_key: testobj2, parcel_id: 547321951627324108975181015563125624335359999533
+parcel_region: 1, parcel_package: 17
+parcel_action: retrieve, parcel_size: 280 bytes
+```
+
+Demo Shipper sample output:
+```bash
+{'requested': 'store', 'parcels': 1, 'receiver': 'localhost'}
+{'requested': 'retrieve', 'meta': 'this would be the data object requested', 'receiver': 'localhost'}
+{'requested': 'store', 'parcels': 0, 'receiver': 'localhost'}
+```
+
 ### Comming Soon
 
 * **Pillar Box** definitions and optional Piller Box server code. The Pillar Box can act as a data node or an interface to other database technologies. This means you could use Pillar Boxes to create a sharded MySQL backend, or to connect multiple <popular noSQL databases> into a cluster giving an increase in distributed read/write performance.
