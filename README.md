@@ -23,7 +23,7 @@ It is completely possible to put any type of source data into a `parcel`. Once `
 
 ### Pillar Box Demo
 Basic functionality is available now for Pillar Box. To test it out you can launch Pillar Box by one of the following methods:
-* run `pillarbox/pillarbox.sh start <PATH TO PILLARBOX.PY>`
+* run `pillarbox/pillarbox.sh start <PATH TO PILLARBOX.PY>` or `pillarbox/pillarbox.sh start .`
 * run `pillarbox/pillarbox.py`
 Using the first method will daemonize Pillar Box and register it's PID
 
