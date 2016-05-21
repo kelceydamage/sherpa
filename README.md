@@ -38,16 +38,25 @@ To control what happens to a container once it arrives at a Pillar Box can be co
 
 Pillar Box sample output:
 ```bash
-delivery to: localhost, delivery_size: 280 bytes, container_size: 72 bytes, compressed_size: 291 bytes
+--------------------
+delivery to: localhost, delivery_size: 280 bytes, container_size: 72 bytes, compressed_size: 291
 --------------------
 parcel_key: testobj1, parcel_id: 1293294176801013002297190993245407132226136516837
 parcel_region: 0, parcel_package: 0
 parcel_action: store, parcel_size: 1048 bytes
+--------------------
+delivery to: localhost, delivery_size: 280 bytes, container_size: 72 bytes, compressed_size: 282
+--------------------
+parcel_key: testobj2, parcel_id: 547321951627324108975181015563125624335359999533
+parcel_region: 1, parcel_package: 17
+parcel_action: retrieve, parcel_size: 280 bytes
 ```
 
 Demo Shipper sample output:
 ```bash
-{'manifest': {0: KeyError('B',), 1: KeyError('B',)}, 'id': '56c62f622872fff5cd9a183c0eafb8af', 'sherpa': <libs.sherpa.Sherpa object at 0x7fffffc1a790>}
+{'requested': 'store', 'parcels': 1, 'receiver': 'localhost'}
+{'requested': 'retrieve', 'meta': 'this would be the data object requested', 'receiver': 'localhost'}
+{'requested': 'store', 'parcels': 0, 'receiver': 'localhost'}
 ```
 
 ### Comming Soon
