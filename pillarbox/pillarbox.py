@@ -26,10 +26,13 @@
 import SocketServer
 import subprocess
 import socket
+import pickle
 import ssl
 import json
 import os
 import re
+import bz2
+from libs.data_types import *
 
 # Init Variables
 #-----------------------------------------------------------------------#
@@ -49,16 +52,27 @@ class LocalTasks(object):
 				stdin=subprocess.PIPE,
 				shell=boolean
 				)
-
 			return cls.methods[method](proc.stdout.read()).format()
-
 		if method in cls.methods:
-
 				return gather_data(cls, False, method)
-
 		else:
-
 			return 'Invalid Method'
+
+	@classmethod
+	def unpack(cls, container):
+		for parcel in container.contents:
+			print '-' * 20
+			print 'delivery to: {0}, delivery_size: {1} bytes, container_size: {2} bytes, compressed_size: {3}'.format(
+				container.address, 
+				(container.__sizeof__() + container.__dict__.__sizeof__()), 
+				container.contents.__sizeof__(),
+				container.csize
+				)
+			print '-' * 20
+			print 'parcel_key: {0}, parcel_id: {1}'.format(parcel.key, parcel.id)
+			print 'parcel_region: {0}, parcel_package: {1}'.format(parcel.region, parcel.package)
+			print 'parcel_action: {0}, parcel_size: {1} bytes'.format(parcel.action, (parcel.__sizeof__() + parcel.__dict__.__sizeof__()))
+		return {'received': len(container.contents), 'receiver': container.address}
 
 class SimpleServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 	daemon_threads = True
@@ -93,7 +107,8 @@ class TCPHandler(SocketServer.BaseRequestHandler):
 		}
 
 	def handle(self):
-		self.data = self.request.recv(1024).strip()
+		compressed = self.request.recv(1024).strip()
+		self.container = bz2.decompress(compressed)
 		for entry in self.white_list:
 			if re.search(entry, self.client_address[0]):
 				match_token = True
@@ -101,12 +116,13 @@ class TCPHandler(SocketServer.BaseRequestHandler):
 		else:
 			match_token = False
 		if match_token == True:
-			response = LocalTasks.run_task(self.data)
-			response['api'] = self.api_version
-			response['api']['api_name'] = self.data
-			self.request.sendall(json.dumps(response))
+			self.container = pickle.loads(self.container)
+			response = LocalTasks.unpack(self.container)
+			compressed = bz2.compress(pickle.dumps(response))
+			self.request.sendall(compressed)
 		else:
-			self.request.sendall(json.dumps({'error': 'Connection Refused'}))
+			compressed = bz2.compress(pickle.dumps({'error': 'Connection Refused'}))
+			self.request.sendall(compressed)
 
 # Functions
 #-----------------------------------------------------------------------#
