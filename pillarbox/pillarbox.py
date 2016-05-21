@@ -71,8 +71,18 @@ class LocalTasks(object):
 			print '-' * 20
 			print 'parcel_key: {0}, parcel_id: {1}'.format(parcel.key, parcel.id)
 			print 'parcel_region: {0}, parcel_package: {1}'.format(parcel.region, parcel.package)
-			print 'parcel_action: {0}, parcel_size: {1} bytes'.format(parcel.action, (parcel.__sizeof__() + parcel.__dict__.__sizeof__()))
-		return {'received': len(container.contents), 'receiver': container.address}
+			print 'parcel_action: {0}, parcel_size: {1} bytes'.format(
+				parcel.action, 
+				(parcel.__sizeof__() + parcel.__dict__.__sizeof__())
+				)
+		delivery = container.unpack()
+		rc = 0
+		for parcel in delivery:
+			if parcel.action == 'retrieve':
+				container.append(Parcel({'requested': 'retrieve', 'receiver': container.address, 'meta': 'this would be the data object requested'}))
+				rc += 1		
+		container.append(Parcel({'requested': 'store', 'receiver': container.address, 'parcels': len(delivery) - rc}))
+		return container
 
 class SimpleServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 	daemon_threads = True
@@ -117,8 +127,8 @@ class TCPHandler(SocketServer.BaseRequestHandler):
 			match_token = False
 		if match_token == True:
 			self.container = pickle.loads(self.container)
-			response = LocalTasks.unpack(self.container)
-			compressed = bz2.compress(pickle.dumps(response))
+			container = LocalTasks.unpack(self.container)
+			compressed = bz2.compress(pickle.dumps(container))
 			self.request.sendall(compressed)
 		else:
 			compressed = bz2.compress(pickle.dumps({'error': 'Connection Refused'}))
