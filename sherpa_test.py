@@ -27,6 +27,12 @@ from libs.sherpa import Sherpa
 from sherpa_helpers import debug_results, distribution, quartermaster
 from libs.perf import perf_results
 
+def node_gen(routes):
+	nodes = {}
+	for i in range(0, routes):
+		nodes[i] = 'remote_server_hostname'
+	return nodes
+
 parser = optparse.OptionParser()
 parser.add_option('-p', '--packages', dest='packages', help='specify the minimum number of packages to ship')
 parser.add_option('-r', '--routes', dest='routes', help='specify the amount of routes to ship to')
@@ -39,9 +45,9 @@ min_packages = int(options.packages)
 routes = int(options.routes)
 parcels = quartermaster(int(options.parcels), [4, 16])
 order = []
-
+nodes = node_gen(routes)
 # Actual code for using sherpa
-sherpa = Sherpa(packages=min_packages, routes=routes)
+sherpa = Sherpa(regions=nodes, packages=min_packages)
 for parcel in parcels:
 	order.append(sherpa.packer(parcel))
 
