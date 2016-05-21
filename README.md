@@ -66,6 +66,7 @@ Demo Shipper sample output:
 
 * **Pillar Box** definitions and optional Piller Box server code. The Pillar Box can act as a data node or an interface to other database technologies. For example this means you could use Pillar Boxes to create a sharded MySQL backend, or to connect multiple <popular noSQL databases> into a cluster giving an increase in distributed read/write performance.
 * **Better Error Handling** which should make the platform more robust against potential errors.
+* **Basic File Backend** will provide a file store so that Sherpa can be used on it's own
 * **Unit Tests**
 * **Parity Routes** which will allow replication of data using integer position shifting.
 * **Writeback Replication** which will create aynchronous object duplication
