@@ -35,6 +35,8 @@ Once Pillar Box is running execute `shipper/demo-shipper.py` to see it in action
 You can install pillar box on multiple servers. Make sure to update the `conf/nodes.py` file to register each of your servers hostnames.
 
 ### Making Use Of Sherpa In Its Current Shape
+NOTE: Basic filestore class has been temporarily added to the pillarbox code.
+
 Currently Sherpa is only in a demo state, but it can be extended for actual use. `shipper/demo-shipper.py` can be used as an example for how to interact with Sherpa in order to send and receive packages.
 
 To control what happens to a container once it arrives at a Pillar Box can be controlled by modifying and extending the `LocalTasks` class in `pillarbox/pillierbox.py` for an example you can look at the current `.unpack()` method which prints container and parcel details before sending a receipt container back to the sender.
