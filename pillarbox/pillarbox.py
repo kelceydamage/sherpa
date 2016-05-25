@@ -32,11 +32,66 @@ import json
 import os
 import re
 import bz2
+import gzip
 from libs.data_types import *
 
 # Init Variables
 #-----------------------------------------------------------------------#
 ar_methods = {'test': 'test'}
+
+# TEMP FILE STORAGE SYSTEM
+#-----------------------------------------------------------------------#
+class Filestore(object):
+	"""docstring for Filestore"""
+	def __init__(self):
+		super(Filestore, self).__init__()
+		self.write_manifest = {}
+		self.read_manifest = {}
+
+	def sort_packages(self, delivery):
+		for parcel in delivery:
+			if parcel.package in self.write_manifest.keys() and parcel.action == 'store':
+				self.write_manifest[str(parcel.package)][str(parcel.id)] = pickle.dumps(parcel)
+			elif parcel.package not in self.write_manifest.keys() and parcel.action == 'store':
+				self.write_manifest[str(parcel.package)] = {}
+				self.write_manifest[str(parcel.package)][str(parcel.id)] = pickle.dumps(parcel)
+			elif parcel.package in self.read_manifest.keys() and parcel.action == 'retrieve':
+				self.read_manifest[str(parcel.package)][str(parcel.id)] = 0
+			elif parcel.package not in self.read_manifest.keys() and parcel.action == 'retrieve':
+				self.read_manifest[str(parcel.package)] = {}
+				self.read_manifest[str(parcel.package)][str(parcel.id)] = 0
+
+	def merge(self):
+		for package in self.write_manifest:
+			self.open(package)
+			m = getattr(self, str(package))
+			m.update(self.write_manifest[package])
+			self.write(package, m)
+
+	def get(self):
+		container = []
+		for package in self.read_manifest:
+			self.open(package)
+			for parcel_id in self.read_manifest[package].keys():
+				m = getattr(self, str(package))
+				try:
+					container.append(m[str(parcel_id)])
+				except Exception, e:
+					container.append(Parcel({'requested': 'retrieve', 'meta': 'key error {0} does not exist'.format(str(e))}))
+		return container
+
+	def open(self, package):
+		try:
+			with gzip.open('data/{0}'.format(str(package)), 'rb') as manifest:
+				setattr(self, str(package), pickle.loads(manifest.read()))
+		except Exception, e:
+			if 'No such file' in str(e):
+				self.write(package, {'init': None})
+				setattr(self, str(package), {'init': None})
+
+	def write(self, package, m):
+		with gzip.open('data/{0}'.format(str(package)), 'wb') as manifest:
+			manifest.write(pickle.dumps(m))
 
 # Classes
 #-----------------------------------------------------------------------#
@@ -77,10 +132,18 @@ class LocalTasks(object):
 				)
 		delivery = container.unpack()
 		rc = 0
+		filestore = Filestore()
+		filestore.sort_packages(delivery)
+		filestore.merge()
+		filestore
+		retrieval_container = filestore.get()
+		container.contents = container.contents + retrieval_container
+		'''
 		for parcel in delivery:
 			if parcel.action == 'retrieve':
 				container.append(Parcel({'requested': 'retrieve', 'receiver': container.address, 'meta': 'this would be the data object requested'}))
 				rc += 1		
+		'''
 		container.append(Parcel({'requested': 'store', 'receiver': container.address, 'parcels': len(delivery) - rc}))
 		return container
 
