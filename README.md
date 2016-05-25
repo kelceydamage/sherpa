@@ -58,7 +58,7 @@ parcel_action: retrieve, parcel_size: 280 bytes
 Demo Shipper sample output:
 ```bash
 {'requested': 'store', 'parcels': 1, 'receiver': 'localhost'}
-{'requested': 'retrieve', 'meta': 'this would be the data object requested', 'receiver': 'localhost'}
+{'requested': 'retrieve', 'meta': 'meta': "key error '547321951627324108975181015563125624335359999533' does not exist"}
 {'requested': 'store', 'parcels': 0, 'receiver': 'localhost'}
 ```
 
@@ -74,7 +74,7 @@ Demo Shipper sample output:
 
 Thanks!
 
-### output Sample
+### output Sample For SHerpa Test Utility
 ```bash
 ----------------------------------------------------------------------
 Sherpa routing results: 9999 parcels in 23[20] packages over 7 regions
