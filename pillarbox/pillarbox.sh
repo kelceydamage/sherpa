@@ -42,9 +42,14 @@
 PROG="pillarbox.py"
 #PROG_PATH="/opt/sherpa/pillarbox" ## Not need, but sometimes helpful (if $PROG resides in /opt for example).
 #PROG_PATH="/opt/Development/git/sherpa/pillarbox"
-PROG_PATH=$2
+#PROG_PATH=$2
 PID_PATH="var/run"
 PROG_ARGS=""
+if [ $2 ]; then
+	PROG_PATH=$2
+else
+	PROG_PATH='.'
+fi
 
 start() {
     if [ -e "$PID_PATH/$PROG.pid" ]; then
